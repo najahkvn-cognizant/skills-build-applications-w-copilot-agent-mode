@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getResourceUrl } from '../utils/api';
 
 export default function Teams() {
   const [items, setItems] = useState([]);
@@ -8,7 +7,12 @@ export default function Teams() {
   useEffect(() => {
     async function load() {
       try {
-        const response = await fetch(getResourceUrl('teams'));
+        const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+        const apiBaseUrl = codespaceName
+          ? `https://${codespaceName}-8000.app.github.dev/api/teams/`
+          : 'http://localhost:8000/api/teams/';
+
+        const response = await fetch(apiBaseUrl);
         if (!response.ok) {
           throw new Error('Unable to fetch teams');
         }
