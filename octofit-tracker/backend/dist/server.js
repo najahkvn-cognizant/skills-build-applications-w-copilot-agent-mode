@@ -7,13 +7,14 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const codespaces_1 = require("./config/codespaces");
 const models_1 = require("./models/models");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = Number(process.env.PORT || 8000);
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
-const apiBaseUrl = (0, codespaces_1.getApiBaseUrl)();
+const codespaceName = process.env.CODESPACE_NAME;
+const codespaceUrl = codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+const apiBaseUrl = codespaceName ? codespaceUrl : 'http://localhost:8000';
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.get('/api/health', (_req, res) => {
